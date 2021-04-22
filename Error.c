@@ -6,5 +6,5 @@
 void m_print_error(const char info[], const char file[], size_t line) {
     perror(info);
     printf("\n File: %s\n Line %lu\n ", file, line );
-    exit(1488);
+
 }

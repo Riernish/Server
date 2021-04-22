@@ -8,6 +8,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
+
 void m_print_error(const char info[], const char file[], size_t line);
 #define ERROR(str) m_print_error(str, __FILE__, __LINE__)
 

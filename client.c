@@ -13,11 +13,12 @@ int main(int argc, char** argv) {
         const struct in_addr in_ad = { check_arg(argc, argv[1]) };
 
         int sk = socket (AF_INET , SOCK_DGRAM , 0);
-        if (sk == -1) { ERROR("Unable to connect to socket!\n");}
+        if (sk == -1) { ERROR("Unable to connect to socket!\n"); exit(EXIT_FAILURE);}
         if (argc == 2 && strcmp (argv[1] , "broadcast") == 0) {
             int yes = 1;
             if (setsockopt(sk, SOL_SOCKET, SO_BROADCAST, &yes, sizeof(yes)) == -1) {
                 ERROR("Can't optionalize socket!");
+                exit(EXIT_FAILURE);
 
             }
         }
@@ -32,9 +33,12 @@ int main(int argc, char** argv) {
 
             close(sk);
             ERROR("Unable to bind socket");
+            exit(EXIT_FAILURE);
         }
 
-        int Client_ID = GetID(sk, sending_, receiving_);
+        int Client_ID = -2;
+        Client_ID = GetID(sk, sending_, receiving_);
+        if (Client_ID == -2) { ERROR("No server found\n"); exit(EXIT_FAILURE);}
 
 
         char buffer[BUFSZ] = {};
@@ -43,6 +47,7 @@ int main(int argc, char** argv) {
 
             if (fgets(buffer, BUFSZ, stdin)== NULL) {
                 ERROR("Ne chitayetsya stroka ");
+                exit(EXIT_FAILURE);
 
             }
 
@@ -84,6 +89,7 @@ in_addr_t check_arg (int argc , char* argv) {
     }
     if (argc > 2) {
         ERROR("Should be 1 or 2 arguments");
+        exit(EXIT_FAILURE);
     }
         return -1;
 

@@ -22,7 +22,7 @@ static struct sockaddr* name = NULL;
 
 int main(int argc, char* argv[]) {
 
-    if (argc < 6){ERROR("Not enough parameter"); return 0;}
+    if (argc < 6){ERROR("Not enough parameter"); exit(EXIT_FAILURE);}
 
     printf("%d\n", getpid());
 
@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
 
         if (strcmp(pack -> data_, "CLOSE_SERVER") == 0) {DestroyPack_Unnamed(pack); send_message("SERVER_CLOSED!\n"); break;}
 
-        if (strcmp(pack -> data_, "bash") == 0) {DestroyPack_Unnamed(pack); create_bash(); break;}
+        if (strcmp(pack -> data_, "bash") == 0) {DestroyPack_Unnamed(pack); create_bash(); continue;}
 
         check_buffer(pack -> data_);
         fflush(stdout);
@@ -82,9 +82,9 @@ void check_buffer (char* buffer) {
 }
 void do_ls () {
     char buffer[BUFSZ];
-    if (getcwd(buffer, BUFSZ) == NULL) {ERROR("Cant define current working directory!"); return;}
+    if (getcwd(buffer, BUFSZ) == NULL) {ERROR("Cant define current working directory!"); exit(EXIT_FAILURE);}
     int new_pipe[2] = {};
-    if (pipe(new_pipe) == -1) {ERROR("Cant create new pipe! "); return;}
+    if (pipe(new_pipe) == -1) {ERROR("Cant create new pipe! "); exit(EXIT_FAILURE);}
 
     pid_t pd = fork();
     if (pd == 0) {
@@ -94,10 +94,10 @@ void do_ls () {
     }
     waitpid(pd, NULL, 0);
     printf("%d %d\n", new_pipe[0], new_pipe[1]);
-    if (write(new_pipe[1], "\0", 1) == -1) {ERROR("Cant write! "); return;}
+    if (write(new_pipe[1], "\0", 1) == -1) {ERROR("Cant write! "); exit(EXIT_FAILURE);}
     char buffer2[BUFSZ] = {};
 
-    if (read(new_pipe[0], buffer2, BUFSZ ) == -1) {ERROR("Cant read from pipe! "); return;}
+    if (read(new_pipe[0], buffer2, BUFSZ ) == -1) {ERROR("Cant read from pipe! "); exit(EXIT_FAILURE);}
     else {
         strcat(buffer, "\n");
         strcat(buffer2, "\0");
@@ -141,9 +141,9 @@ void create_bash () {
 
     pid_t pd = fork();
     if (pd == 0) {
-        if (dup2(fd2, STDIN_FILENO) == -1) {ERROR("STDIN dup error! "); return; }
-        if (dup2(fd2, STDOUT_FILENO) == -1) {ERROR("STDOUT dup error! "); return; }
-        if (dup2(fd2, STDERR_FILENO) == -1) {ERROR("STDERR dup error! "); return; }
+        if (dup2(fd2, STDIN_FILENO) == -1) {ERROR("STDIN dup error! "); exit(EXIT_FAILURE); }
+        if (dup2(fd2, STDOUT_FILENO) == -1) {ERROR("STDOUT dup error! "); exit(EXIT_FAILURE); }
+        if (dup2(fd2, STDERR_FILENO) == -1) {ERROR("STDERR dup error! "); exit(EXIT_FAILURE); }
         close(fd);
 
         execlp("/bin/bash" , "/bin/bash" , NULL);
