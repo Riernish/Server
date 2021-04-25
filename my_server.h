@@ -24,6 +24,8 @@
 #include <poll.h>
 
 
+
+
 #define PATH "/tmp/mysock"
 #define DUMMY_STR "London is the capital of Great Britain\n"
 #define BUFSZ 256
@@ -32,6 +34,7 @@
 #define PORT 23456
 
 #include "Error.h"
+#include "log.h"
 
 
 

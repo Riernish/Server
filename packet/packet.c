@@ -25,7 +25,7 @@ pack_named_t* CreatePack_Named (const char* data , size_t size , int name)
 }
 pack_unnamed_t* CreatePack_Unnamed (const char* data , size_t size)
 {
-    pack_unnamed_t* out = (pack_unnamed_t*)malloc (sizeof (pack_unnamed_t));
+    pack_unnamed_t* out = (pack_unnamed_t*)malloc (sizeof (pack_unnamed_t) );
     if (out == NULL) {
         free (out);
         ERROR ("Can't get dynamic memory for unnamed_pack!\n");
@@ -34,7 +34,7 @@ pack_unnamed_t* CreatePack_Unnamed (const char* data , size_t size)
     }
 
     out->size_ = size;
-    out->data_ = (char*)malloc (sizeof (char) * size);
+    out->data_ = (char*)malloc (sizeof (char) * (size + 1));
     for (size_t i = 0; i < size; ++i)
         out->data_[i] = data[i];
     out->data_[size] = '\0';
