@@ -74,7 +74,7 @@ int main() {
     }
     pr_info ("Exit program");
     close_server(sk);
-    free(cur_dir);
+
 
     return 0;
 }
