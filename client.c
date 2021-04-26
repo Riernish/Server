@@ -46,8 +46,10 @@ int main(int argc, char** argv) {
 
         pr_info("Client was initialized");
         int Client_ID = -2;
+        printf("Connecting to the server...\n");
         Client_ID = GetID(sk, sending_, receiving_);
         if (Client_ID == -2) { pr_strerr("No server found"); exit(EXIT_FAILURE);}
+        printf("Connected!\n");
 
         if (SetClientLog(Client_ID) == -1) { pr_strerr("Cant set log"); exit(EXIT_FAILURE);}
 
