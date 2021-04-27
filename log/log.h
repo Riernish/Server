@@ -21,7 +21,7 @@ int UnSetLogFile();
 
 int WriteLoggingFile(int level, char* message, ...);
 
-#define INFO
+//#define INFO
 
 #define pr_log(level, str, ...) WriteLoggingFile(level, str" FILE:%s LINE:%d",  ##__VA_ARGS__, __FILE__, __LINE__)
 
