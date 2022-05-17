@@ -21,7 +21,7 @@ int main() {
     if (cur_dir == NULL) { return -1;}
     memcpy (slave_barn , cur_dir , strlen (cur_dir));
     slave_barn[strlen(cur_dir)] = '\0';
-    strcat (slave_barn , "/server_slave\0");
+    strcat (slave_barn , "/server_slave.o\0");
     free(cur_dir);
 
     if (start_daemon() == -1)
